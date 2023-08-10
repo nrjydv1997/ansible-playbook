@@ -2,7 +2,7 @@
 - name: Downloading and installing Jenkins
   hosts: all
   become: yes
-  become_user: root
+  become_user: ansible
   tasks:
     - name: yum update
       yum:
@@ -13,3 +13,27 @@
       get_url:
         url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
         dest: /etc/yum.repos.d/jenkins.repo
+    
+    - name: import a key file from jenkins-ci
+      rpm_key:
+        state: present
+        key: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+    - name: yum update
+      yum:
+        name: '*'
+        state: latest
+    
+    - name: install java
+      shell: amazon-linux-extras install java-openjdk11 -y
+    
+    - name: install jenkins
+      yum:
+        name: jenkins
+        state: latest
+
+    - name: start jenkins
+      systemd:
+        enabled: yes
+        name: jenkins
+        state: started
