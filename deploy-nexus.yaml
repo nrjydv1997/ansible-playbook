@@ -1,6 +1,7 @@
 ---
 - name: Install java and net-tools
   hosts: all
+  become: true
   tasks:
     - name: Update apt repo and cache
       apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
@@ -13,6 +14,7 @@
 
 - name: Download and unpack Nexus installer
   hosts: all
+  become: true
   tasks:
     - name: Download Nexus
       get_url:
