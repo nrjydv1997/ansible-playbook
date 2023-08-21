@@ -10,3 +10,11 @@
     
     - name: Install net-tools
       apt: name=net-tools
+
+- name: Download and unpack Nexus installer
+  hosts: all
+  tasks:
+    - name: Download Nexus
+      get_url:
+        url: https://download.sonatype.com/nexus/3/latest-unix.tar.gz
+        dest: /opt/
